@@ -1,9 +1,8 @@
 name: 构建织梦正式服
 
 on:
-  push:
-    branches:
-      - main  # 仅在 test 分支推送或合并时触发
+  repository_dispatch:
+    types: [zm_prod_java_server_docker_event]  # 事件类型，可自定义
 
 jobs:
   build:
