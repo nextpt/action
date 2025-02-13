@@ -1,0 +1,31 @@
+name: 构建织梦数据同步
+
+on:
+  push:
+    branches:
+      - main  # 仅在 test 分支推送或合并时触发
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # 改为最新的 Ubuntu 版本
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          repository: tsinbal/zm-syncer
+          ref: master
+          token: ${{ secrets.MY_ACCESS_TOKEN }}
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{secrets.DOCKER_USERNAME}}
+          password: ${{secrets.DOCKER_PASSWORD}}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build and push Docker image
+        run: |
+          docker buildx build --platform linux/amd64,linux/arm64 --progress=plain -t ${{secrets.DOCKER_USERNAME}}/zm-syncer:latest --push .
