@@ -12,7 +12,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: tsinbal/nanobot
-          ref: master
+          ref: main
           token: ${{ secrets.MY_ACCESS_TOKEN }}
 
       - name: Log in to Docker Hub
